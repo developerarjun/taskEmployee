@@ -13,6 +13,7 @@ namespace taskemployee.Entity
 
         }
         public DbSet<User> users { get; set; }
+        public DbSet<Employee> employees { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(

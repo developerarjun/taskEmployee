@@ -32,6 +32,19 @@ namespace taskemployee
         {
             services.AddCors();
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
+
+
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+
+
 
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseMySQL(Configuration.GetConnectionString("taskemployee"))
@@ -39,6 +52,8 @@ namespace taskemployee
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmployeeServices, EmployeeServices>();
+            services.AddScoped<IFileUploadDetails, FileUploadDetails>();
 
             services.AddSwaggerGen(c =>
             {
@@ -61,10 +76,8 @@ namespace taskemployee
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseCors(x => x
-               .AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+            
+            app.UseCors("CorsPolicy");
 
             app.UseMiddleware<JwtMiddleware>();
 

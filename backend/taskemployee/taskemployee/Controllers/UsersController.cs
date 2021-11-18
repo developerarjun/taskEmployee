@@ -37,6 +37,13 @@ namespace taskemployee.Controllers
             var users = _userService.GetAll();
             return Ok(users);
         }
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetDetailsemployee(int id)
+        {
+            var users = _userService.GetById(id);
+            return Ok(users);
+        }
 
     }
 }
